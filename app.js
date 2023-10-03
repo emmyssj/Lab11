@@ -1,85 +1,105 @@
-// DOM Nodes
-let goatContainer = document.querySelector("section");
-let image1 = document.querySelector("section img:first-child");
-let image2 = document.querySelector("section img:nth-child(2)");
+const img1 = document.getElementById("img1");
+const img2 = document.getElementById("img2");
+const img3 = document.getElementById("img3");
 
-// keep each goat in an object
-function Goat(name, src) {
+// make sure the user only has 25 clicks
+let userClicks = 0;
+let maxClicks = 25;
+
+// a constructor that makes product objects
+function Product(name) {
   this.name = name;
-  this.src = src;
+  this.src = `./images/${name}.jpg`;
   this.views = 0;
   this.clicks = 0;
 }
 
-// function to choose a random goat
-function getRandomIndex() {
-  return Math.floor(Math.random() * allGoats.length);
-}
-
-// function to render 2 random goats
-function renderGoats() {
-  // get 2 rnadom indexes from our goat array
-  let goat1Index = getRandomIndex();
-  let goat2Index = getRandomIndex();
-
-  // prevent the two images being the same goat
-  while (goat1Index === goat2Index) {
-    goat2Index = getRandomIndex();
-  }
-
-  // change the src of our 2 images
-  image1.src = allGoats[goat1Index].src;
-  image2.src = allGoats[goat2Index].src;
-  image1.alt = allGoats[goat1Index].name;
-  image2.alt = allGoats[goat2Index].name;
-
-  // increase the goats views
-  allGoats[goat1Index].views++;
-  allGoats[goat2Index].views++;
-}
-
-// handle the goat being clicked
-function handleGoatClick(event) {
-  // get the name of the goat we just clicked
-  let clickedGoat = event.target.alt;
-
-  // check if the click is on an image
-  if (event.target === goatContainer) {
-    alert("Please click on an image");
-  } else {
-    // render more goats
-    renderGoats();
-  }
-
-  // increase the clicks of the goat
-  // loop through allGoats
-  for (let i = 0; i < allGoats.length; i++) {
-    // check if the name of the goat in the array, matches the alt tag of our image
-    if (clickedGoat === allGoats[i].name) {
-      // increase the number of clicks
-      allGoats[i].clicks++;
-      // stop the for loop because we found the goat
-      break;
-    }
-  }
-}
-
-// make the goats
-const allGoats = [
-  new Goat("Cruising Goat", "./images/cruisin-goat.jpg"),
-  new Goat("Float Your Goat", "./images/float-your-goat.jpg"),
-  new Goat("Goat Out of Hand", "./images/goat-out-of-hand.jpg"),
-  new Goat("Kissing Goat", "./images/kissing-goat.jpg"),
-  new Goat("Sassy Goat", "./images/sassy-goat.jpg"),
-  new Goat("Smiling Goat", "./images/smiling-goat.jpg"),
-  new Goat("Sweater Goat", "./images/sweater-goat.jpg"),
+const products = [
+  new Product("bag"),
+  new Product("banana"),
+  new Product("bathroom"),
+  new Product("boots"),
+  new Product("breakfast"),
+  new Product("bubblegum"),
+  new Product("chair"),
+  new Product("cthulhu"),
+  new Product("dog-duck"),
+  new Product("dragon"),
+  new Product("pen"),
 ];
 
-// render the results
-// when the user clicks the view results button
-// render a ul full of lis that tell the user how many tiems each goat has been clicked
+// function that randomly gets a index for an item in item
+function randomProdIdx() {
+  return Math.floor(Math.random() * products.length);
+}
 
-// add the event listener to the goats
-goatContainer.addEventListener("click", handleGoatClick);
+// function that randomly gets a index for an item in item
+function randomProdIdx() {
+  return Math.floor(Math.random() * products.length);
+}
 
-renderGoats();
+// change the src and alt attributes of our img tags
+img1.src = products[prod1].src;
+img2.src = products[prod2].src;
+img3.src = products[prod3].src;
+img1.alt = products[prod1].name;
+img2.alt = products[prod2].name;
+img3.alt = products[prod3].name;
+
+// increase the views of the displayed objects
+products[prod1].views++;
+products[prod2].views++;
+products[prod3].views++;
+
+// handle what happens when click the image
+// the "clicks" property of the image I click to go up by one
+// render 3 new images
+
+function handleImgClick(event) {
+  // check if the user has run out of clicks
+  if (userClicks === maxClicks) {
+    alert("You have run out of votes");
+    return; // end the function here and don't run the rest
+  }
+}
+
+// increase the number of times the user has clicked
+userClicks++;
+
+// get the name of the clicked product
+let clickedProduct = event.target.alt;
+
+// increase the clicks of the product
+for (let i = 0; i < products.length; i++) {
+  if (clickedProduct === products[i].name) {
+    products[i].clicks++;
+    break; // break because we found what we are looking for
+  }
+}
+
+// render 3 more images
+renderProducts();
+
+img1.addEventListener("click", handleImgClick);
+img2.addEventListener("click", handleImgClick);
+img3.addEventListener("click", handleImgClick);
+
+// a button to view the results
+function showResults() {
+  // put a bunch of lis into a ul
+  const results = document.getElementById("results");
+
+  // loop through our products and make an li for each one
+  for (let i = 0; i < products.length; i++) {
+    const li = document.createElement("li");
+    const product = products[i];
+    li.textContent = `${product.name} was viewed ${product.views} times, and clicked ${product.clicks} times`;
+    results.appendChild(li);
+  }
+}
+
+// make the button show the results
+const viewResults = document.getElementById("view-results");
+viewResults.addEventListener("click", showResults);
+
+renderProducts();
