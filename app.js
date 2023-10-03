@@ -33,9 +33,20 @@ function randomProdIdx() {
   return Math.floor(Math.random() * products.length);
 }
 
-// function that randomly gets a index for an item in item
-function randomProdIdx() {
-  return Math.floor(Math.random() * products.length);
+
+  // make a function that puts 3 random products on the page (using the 3 img tags)
+
+  function renderProducts() {
+  // get 3 indexs from our products array
+  let prod1 = randomProdIdx();
+  let prod2 = randomProdIdx();
+  let prod3 = randomProdIdx();
+
+  // make sure they aren't the same
+  while (prod1 === prod2 || prod1 === prod3 || prod2 === prod3) {
+    prod2 = randomProdIdx();
+    prod3 = randomProdIdx();
+  }
 }
 
 // change the src and alt attributes of our img tags
@@ -51,6 +62,7 @@ products[prod1].views++;
 products[prod2].views++;
 products[prod3].views++;
 
+
 // handle what happens when click the image
 // the "clicks" property of the image I click to go up by one
 // render 3 new images
@@ -59,7 +71,8 @@ function handleImgClick(event) {
   // check if the user has run out of clicks
   if (userClicks === maxClicks) {
     alert("You have run out of votes");
-    return; // end the function here and don't run the rest
+    return; 
+    // end the function here and don't run the rest
   }
 }
 
@@ -79,6 +92,7 @@ for (let i = 0; i < products.length; i++) {
 
 // render 3 more images
 renderProducts();
+
 
 img1.addEventListener("click", handleImgClick);
 img2.addEventListener("click", handleImgClick);
