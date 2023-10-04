@@ -33,10 +33,9 @@ function randomProdIdx() {
   return Math.floor(Math.random() * products.length);
 }
 
+// make a function that puts 3 random products on the page (using the 3 img tags)
 
-  // make a function that puts 3 random products on the page (using the 3 img tags)
-
-  function renderProducts() {
+function renderProducts() {
   // get 3 indexs from our products array
   let prod1 = randomProdIdx();
   let prod2 = randomProdIdx();
@@ -44,24 +43,25 @@ function randomProdIdx() {
 
   // make sure they aren't the same
   while (prod1 === prod2 || prod1 === prod3 || prod2 === prod3) {
+    prod1 = randomProdIdx();
     prod2 = randomProdIdx();
     prod3 = randomProdIdx();
   }
+
+  // change the src and alt attributes of our img tags
+
+  img1.src = products[prod1].src;
+  img2.src = products[prod2].src;
+  img3.src = products[prod3].src;
+  img1.alt = products[prod1].name;
+  img2.alt = products[prod2].name;
+  img3.alt = products[prod3].name;
+
+  // increase the views of the displayed objects
+  products[prod1].views++;
+  products[prod2].views++;
+  products[prod3].views++;
 }
-
-// change the src and alt attributes of our img tags
-img1.src = products[prod1].src;
-img2.src = products[prod2].src;
-img3.src = products[prod3].src;
-img1.alt = products[prod1].name;
-img2.alt = products[prod2].name;
-img3.alt = products[prod3].name;
-
-// increase the views of the displayed objects
-products[prod1].views++;
-products[prod2].views++;
-products[prod3].views++;
-
 
 // handle what happens when click the image
 // the "clicks" property of the image I click to go up by one
@@ -71,28 +71,27 @@ function handleImgClick(event) {
   // check if the user has run out of clicks
   if (userClicks === maxClicks) {
     alert("You have run out of votes");
-    return; 
+    return;
     // end the function here and don't run the rest
   }
-}
 
-// increase the number of times the user has clicked
-userClicks++;
+  // increase the number of times the user has clicked
+  userClicks++;
 
-// get the name of the clicked product
-let clickedProduct = event.target.alt;
+  // get the name of the clicked product
+  let clickedProduct = event.target.alt;
 
-// increase the clicks of the product
-for (let i = 0; i < products.length; i++) {
-  if (clickedProduct === products[i].name) {
-    products[i].clicks++;
-    break; // break because we found what we are looking for
+  // increase the clicks of the product
+  for (let i = 0; i < products.length; i++) {
+    if (clickedProduct === products[i].name) {
+      products[i].clicks++;
+      break; // break because we found what we are looking for
+    }
   }
 }
 
 // render 3 more images
 renderProducts();
-
 
 img1.addEventListener("click", handleImgClick);
 img2.addEventListener("click", handleImgClick);
