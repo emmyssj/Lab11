@@ -1,9 +1,9 @@
 #img-section {
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid fuchsia;
-  }
-  
-  #img-section img {
-    width: 30%;
-  }
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid fuchsia;
+}
+
+#img-section img {
+  width: 30%;
+}
