@@ -6,27 +6,49 @@ const img3 = document.getElementById("img3");
 let userClicks = 0;
 let maxClicks = 25;
 
+const products = [];
+
 // a constructor that makes product objects
-function Product(name) {
+function Product(name, views, clicks) {
   this.name = name;
   this.src = `./images/${name}.jpg`;
-  this.views = 0;
-  this.clicks = 0;
+  this.views = views;
+  this.clicks = clicks;
+
+  // take the new object that is created, and put it into the array
+  products.push(this);
 }
 
-const products = [
-  new Product("bag"),
-  new Product("banana"),
-  new Product("bathroom"),
-  new Product("boots"),
-  new Product("breakfast"),
-  new Product("bubblegum"),
-  new Product("chair"),
-  new Product("cthulhu"),
-  new Product("dog-duck"),
-  new Product("dragon"),
-  new Product("pen"),
-];
+// instantiate my default products (0 views and clicks)
+if (localStorage.getItem("products") === null) {
+  new Product("bag", 0, 0);
+  new Product("banana", 0, 0);
+  new Product("bathroom", 0, 0);
+  new Product("boots", 0, 0);
+  new Product("breakfast", 0, 0);
+  new Product("bubblegum", 0, 0);
+  new Product("chair", 0, 0);
+  new Product("cthulhu", 0, 0);
+  new Product("dog-duck", 0, 0);
+  new Product("dragon", 0, 0);
+  new Product("pen", 0, 0);
+  new Product("pet-sweep", 0, 0);
+  new Product("scissors", 0, 0);
+  new Product("shark", 0, 0);
+  new Product("sweep", 0, 0);
+  new Product("tauntaun", 0, 0);
+  new Product("unicorn", 0, 0);
+  new Product("water-can", 0, 0);
+  new Product("wine-glass", 0, 0);
+} else {
+  const productsLS = JSON.parse(localStorage.getItem("products"));
+  // for each item in the productsLS array, make a new Product
+  for (let i = 0; i < productsLS.length; i++) {
+    // create a new product for each item in the array
+    //(and the Product function automatically adds it to the producst array)
+    new Product(productsLS[i].name, productsLS[i].views, productsLS[i].clicks);
+  }
+}
 
 // function that randomly gets a index for an item in item
 function randomProdIdx() {
@@ -71,22 +93,26 @@ function handleImgClick(event) {
   // check if the user has run out of clicks
   if (userClicks === maxClicks) {
     alert("You have run out of votes");
-    return;
-    // end the function here and don't run the rest
+    renderChart();
+    // take our array after we have updated the clicks and views, and add to localStorage
+    localStorage.setItem("products", JSON.stringify(products));
+    return; // end the function here and don't run the rest
   }
 
-  // increase the number of times the user has clicked
-  userClicks++;
+  // end the function here and don't run the rest
+}
 
-  // get the name of the clicked product
-  let clickedProduct = event.target.alt;
+// increase the number of times the user has clicked
+userClicks++;
 
-  // increase the clicks of the product
-  for (let i = 0; i < products.length; i++) {
-    if (clickedProduct === products[i].name) {
-      products[i].clicks++;
-      break; // break because we found what we are looking for
-    }
+// get the name of the clicked product
+let clickedProduct = event.target.alt;
+
+// increase the clicks of the product
+for (let i = 0; i < products.length; i++) {
+  if (clickedProduct === products[i].name) {
+    products[i].clicks++;
+    break; // break because we found what we are looking for
   }
 }
 
@@ -152,3 +178,5 @@ function renderChart() {
     },
   });
 }
+
+renderProducts();
